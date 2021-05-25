@@ -1,0 +1,24 @@
+// 1.	Wszystkie filmy
+MATCH (movie:Movie) RETURN movie
+// 2.	Wszystkie filmy, w których grał Hugo Weaving
+MATCH (hugo:Person {name: "Hugo Weaving"})-[:ACTED_IN]->(hugoMovies) RETURN hugoMovies
+// 3.	Reżyserzy filmów, w których grał Hugo Weaving
+MATCH (hugo:Person {name: "Hugo Weaving"})-[:ACTED_IN]->(hugoMovies)<-[:DIRECTED]-(directors) RETURN directors
+
+// ????? wystarczy tu zwrócić osoby?
+// 4.	Wszystkie osoby, z którymi Hugo Weaving grał w tych samych filmach
+MATCH (hugo:Person {name:"Hugo Weaving"})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(coActors) RETURN DISTINCT coActors
+
+// 5.	Wszystkie filmy osób, które grały w Matrix
+MATCH (matrix:Movie)<-[:ACTED_IN]-(actors)-[:ACTED_IN]->(movies) WHERE matrix.title="The Matrix" OR matrix.title="The Matrix Reloaded" OR matrix.title="The Matrix Revolutions" RETURN DISTINCT movies
+
+// ????? dla zapytania  MATCH (movies)<-[:ACTED_IN]-(actors) RETURN DISTINCT actors, COUNT(movies) ---------- zwraca ładny json ale malo czytelny graph
+// a dla MATCH (movies)<-[:ACTED_IN]-(actors) RETURN DISTINCT actors, movies, COUNT(movies) ----------- odwrotnie
+// 6.	Listę aktorów (aktor = osoba, która grała przynajmniej w jednym filmie) wraz z ilością filmów, w których grali
+MATCH (movies)<-[:ACTED_IN]-(actors) RETURN DISTINCT actors, COUNT(movies)
+
+// 7.	Listę osób, które napisały scenariusz filmu, które wyreżyserowały wraz z tytułami takich filmów (koniunkcja – ten sam autor scenariusza i reżyser)
+MATCH (movies)<-[:DIRECTED]-(people)-[:WROTE]->(movies) RETURN people, movies.title
+// 8.	Listę filmów, w których grał zarówno Hugo Weaving jak i Keanu Reeves
+MATCH (keanu:Person {name:"Keanu Reeves"})-[:ACTED_IN]->(movies)<-[:ACTED_IN]-(hugo:Person {name:"Hugo Weaving"}) RETURN movies
+// 9.	(za 0.2pkt) Zestaw zapytań powodujących uzupełnienie bazy danych o film Captain America: The First Avenger wraz z uzupełnieniem informacji o reżyserze, scenarzystach i odtwórcach głównych ról (w oparciu o skrócone informacje z IMDB - http://www.imdb.com/title/tt0458339/) + zapytanie pokazujące dodany do bazy film wraz odtwórcami głównych ról, scenarzystą i reżyserem. Plik SVG ma pokazywać wynik ostatniego zapytania.

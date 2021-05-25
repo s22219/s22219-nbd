@@ -1,0 +1,54 @@
+﻿[
+  {
+    "people": {
+"identity": 5,
+"labels": [
+        "Person"
+      ],
+"properties": {
+"name": "Lilly Wachowski",
+"born": 1967
+      }
+    },
+    "movies.title": "Speed Racer"
+  },
+  {
+    "people": {
+"identity": 6,
+"labels": [
+        "Person"
+      ],
+"properties": {
+"name": "Lana Wachowski",
+"born": 1965
+      }
+    },
+    "movies.title": "Speed Racer"
+  },
+  {
+    "people": {
+"identity": 45,
+"labels": [
+        "Person"
+      ],
+"properties": {
+"name": "Cameron Crowe",
+"born": 1957
+      }
+    },
+    "movies.title": "Jerry Maguire"
+  },
+  {
+    "people": {
+"identity": 156,
+"labels": [
+        "Person"
+      ],
+"properties": {
+"name": "Nancy Meyers",
+"born": 1949
+      }
+    },
+    "movies.title": "Something's Gotta Give"
+  }
+]
