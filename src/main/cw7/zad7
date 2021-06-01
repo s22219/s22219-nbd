@@ -1,0 +1,24 @@
+1.	Umieść w bazie (nazwa bucketa ma być Twoim numerem indeksu poprzedzonym literą „s”) 5 wartości, gdzie każda z nich ma być dokumentem json mającym 4 pola co najmniej dwóch różnych typów.
+curl -XPUT -H "Content-type: application/json" -id '{"smallLetter": "a", "bigLetter": "A", "place": 1, "isVowel": true}' 'http://localhost:8098/buckets/s22219/keys/a'
+curl -XPUT -H "Content-type: application/json" -id '{"smallLetter": "b", "bigLetter": "B", "place": 2, "isVowel": false}' 'http://localhost:8098/buckets/s22219/keys/b'
+curl -XPUT -H "Content-type: application/json" -id '{"smallLetter": "c", "bigLetter": "C", "place": 3, "isVowel": false}' 'http://localhost:8098/buckets/s22219/keys/c'
+curl -XPUT -H "Content-type: application/json" -id '{"smallLetter": "d", "bigLetter": "D", "place": 4, "isVowel": false}' 'http://localhost:8098/buckets/s22219/keys/d'
+curl -XPUT -H "Content-type: application/json" -id '{"smallLetter": "e", "bigLetter": "E", "place": 5, "isVowel": true}' 'http://localhost:8098/buckets/s22219/keys/e'
+2.	Pobierz z bazy jedną z dodanych przez Ciebie wartości.
+curl -i http://localhost:8098/buckets/s22219/keys/a
+3.	Zmodyfikuj jedną z wartości – dodając dodatkowe pole do dokumentu.
+curl –XPUT -H "Content-Type: application/json" -id '{"smallLetter": "a", "bigLetter": "A", "place": 1, "isVowel": true, "nextLetter": "b"}' 'http://localhost:8098/buckets/s22219/keys/b'
+4.	Zmodyfikuj jedną z wartości – usuwając jedną pole z wybranego dokumentu.
+curl –XPUT -H "Content-Type: application/json" -id '{"smallLetter": "c", "bigLetter": "C", "place": 3}' 'http://localhost:8098/buckets/s22219/keys/c'
+5.	Zmodyfikuj jedną z wartości – zmieniając wartość jednego z pól.
+curl –XPUT -H "Content-Type: application/json" -id '{"smallLetter": "e", "bigLetter": "EEEEEEEEEEE", "place": 3}' 'http://localhost:8098/buckets/s22219/keys/e'
+6.	Usuń jeden z dokumentów z bazy.
+curl -XDELETE -i 'http://localhost:8098/buckets/s22219/keys/e'
+7.	Spróbuj pobrać z bazy wartość, która nie istnieje w tej bazie.
+curl -i http://localhost:8098/buckets/s22219/keys/f
+8.	Dodaj do bazy 1 dokument json (zawierający 1 pole), ale nie specyfikuj klucza.
+curl –XPOST -H "Content-Type: application/json" -id '{"smallLetter": "i", "bigLetter": "I", "place": 9}' 'http://localhost:8098/buckets/s22219/keys'
+9.	Pobierz z bazy element z zadania 8.
+curl -i http://localhost:8098/buckets/s22219/keys/HqjIxsZWLnPBrM6cBPJE4bE2EVk
+10.	Usuń z bazy element z zadania 8
+curl -XDELETE -i 'http://localhost:8098/buckets/s22219/keys/HqjIxsZWLnPBrM6cBPJE4bE2EVk'

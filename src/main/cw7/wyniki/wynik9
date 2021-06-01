@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+X-Riak-Vclock: a85hYGBgzGDKBVI8+xkWvs8yM/OBCCUy5rEy7LmvdYsvCwA=
+Vary: Accept-Encoding
+Server: MochiWeb/1.1 WebMachine/1.10.9 (cafe not found)
+Link: </buckets/s22219>; rel="up"
+Last-Modified: Tue, 01 Jun 2021 16:43:40 GMT
+ETag: "E3x3SFJrs5OAhYarcoHD0"
+Date: Tue, 01 Jun 2021 16:44:58 GMT
+Content-Type: application/json
+Content-Length: 50
+
+{"smallLetter": "i", "bigLetter": "I", "place": 9}[node1] (local) root@192.168.0.18 ~

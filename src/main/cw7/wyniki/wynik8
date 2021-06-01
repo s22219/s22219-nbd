@@ -1,0 +1,8 @@
+curl: (6) Could not resolve host: ���XPOST
+HTTP/1.1 201 Created
+Vary: Accept-Encoding
+Server: MochiWeb/1.1 WebMachine/1.10.9 (cafe not found)
+Location: /buckets/s22219/keys/HqjIxsZWLnPBrM6cBPJE4bE2EVk
+Date: Tue, 01 Jun 2021 16:43:40 GMT
+Content-Type: application/json
+Content-Length: 0
