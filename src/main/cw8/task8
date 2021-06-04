@@ -1,0 +1,99 @@
+import com.basho.riak.client.api.RiakClient;
+import com.basho.riak.client.api.commands.kv.DeleteValue;
+import com.basho.riak.client.api.commands.kv.FetchValue;
+import com.basho.riak.client.api.commands.kv.StoreValue;
+import com.basho.riak.client.api.commands.kv.UpdateValue;
+import com.basho.riak.client.core.RiakCluster;
+import com.basho.riak.client.core.RiakNode;
+import com.basho.riak.client.core.query.Location;
+import com.basho.riak.client.core.query.Namespace;
+import com.basho.riak.client.core.query.RiakObject;
+import com.basho.riak.client.core.util.BinaryValue;
+
+import java.net.UnknownHostException;
+
+public class task8 {
+    public static class Movie {
+        public String title;
+        public String director;
+    }
+
+    public static class MovieUpdate extends UpdateValue.Update<Movie> {
+        private final Movie update;
+        public MovieUpdate(Movie update){
+            this.update = update;
+        }
+
+        @Override
+        public Movie apply(Movie m) {
+            if(m == null) {
+                m = new Movie();
+            }
+
+            m.director = update.director;
+            m.title = update.title;
+
+            return m;
+        }
+    }
+
+    private static RiakCluster setUpCluster() throws UnknownHostException {
+        RiakNode node = new RiakNode.Builder()
+                .withRemoteAddress("127.0.0.1")
+                .withRemotePort(8098)
+                .build();
+
+        RiakCluster cluster = new RiakCluster.Builder(node).build();
+        cluster.start();
+
+        return cluster;
+    }
+
+    public static void main( String[] args ) {
+        try {
+            Movie matrix = new Movie();
+            matrix.title = "Matrix";
+            matrix.director = "Wachowski";
+
+            RiakCluster cluster = setUpCluster();
+            RiakClient client = new RiakClient(cluster);
+
+            Namespace moviesBucket = new Namespace("s22219");
+            Location matrixLocation = new Location(moviesBucket, "matrix");
+            StoreValue storeMovieOp = new StoreValue.Builder(matrix)
+                    .withLocation(matrixLocation)
+                    .build();
+            client.execute(storeMovieOp);
+
+            FetchValue fetchMatrixOp = new FetchValue.Builder(matrixLocation)
+                    .build();
+            Movie fetchedMovie = client.execute(fetchMatrixOp).getValue(Movie.class);
+
+            System.out.println("Movie title: " + fetchedMovie.title);
+            System.out.println("Movie director: " + fetchedMovie.director);
+
+
+            matrix.title = "Matrix Reloaded";
+            MovieUpdate updatedMovie = new MovieUpdate(matrix);
+            UpdateValue updateValue = new UpdateValue.Builder(matrixLocation)
+                    .withUpdate(updatedMovie).build();
+            UpdateValue.Response response = client.execute(updateValue);
+
+            FetchValue fetchMatrixAfterUpdateOp = new FetchValue.Builder(matrixLocation)
+                    .build();
+            Movie fetchedMovieAfterUpdate = client.execute(fetchMatrixAfterUpdateOp).getValue(Movie.class);
+
+            System.out.println("Movie title: " + fetchedMovieAfterUpdate.title);
+            System.out.println("Movie director: " + fetchedMovieAfterUpdate.director);
+
+            DeleteValue deleteMovieOp = new DeleteValue.Builder(matrixLocation)
+                    .build();
+            client.execute(deleteMovieOp);
+
+            cluster.shutdown();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}

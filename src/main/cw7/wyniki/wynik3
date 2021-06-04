@@ -1,4 +1,5 @@
 // pomimo wiaomości Could not resolve host: –XPUT -> to i późniejsze zadania wykonywały się poprawnie
+// najprawdopodobniej powodem było korzystanie ze środowiska Play With Docker
 
 curl: (6) Could not resolve host: –XPUT
 HTTP/1.1 204 No Content
